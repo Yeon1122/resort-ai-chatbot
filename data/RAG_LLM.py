@@ -1,4 +1,4 @@
-# RAG_LLM.py
+# utils/rag_module.py
 
 import os
 import sys
@@ -8,22 +8,19 @@ from langchain_chroma import Chroma
 from langchain_upstage import UpstageEmbeddings, ChatUpstage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-import pprint
 
-# 경고 메시지 숨기기
+# 경고 숨기기
 warnings.filterwarnings("ignore")
 
-
-# .env 로드
+# .env 파일 로드
 load_dotenv()
 upstage_key = os.getenv("UPSTAGE_API_KEY")
 
-# stderr를 /dev/null로 리다이렉트
+# ✅ 벡터스토어 로드 (telemetry 경고 무시)
 with open(os.devnull, 'w') as devnull:
     old_stderr = sys.stderr
     sys.stderr = devnull
     try:
-        # 여기에 벡터스토어 로드 코드
         vectorstore = Chroma(
             embedding_function=UpstageEmbeddings(model="embedding-query"),
             persist_directory='./output/chroma_db'
@@ -31,41 +28,7 @@ with open(os.devnull, 'w') as devnull:
     finally:
         sys.stderr = old_stderr
 
-# # ✅ 저장된 벡터스토어 로드
-# vectorstore = Chroma(
-#     embedding_function=UpstageEmbeddings(model="embedding-query"),
-#     persist_directory='./output/chroma_db'
-# )
-
-
-#=======================================================================================================
-# # ✅ Retriever 생성 [기반 문서 확인 및 top-k 조절]
-# query = "에어캡은 어떻게 버려?"
-# retriever = vectorstore.as_retriever(
-#     search_type='mmr',
-#     search_kwargs={"k": 3}
-# )
-
-# result_docs = retriever.invoke(query)
-
-# print(f"검색된 문서 개수: {len(result_docs)}")
-
-# if len(result_docs) > 0:
-#     pprint.pprint(result_docs[0].page_content[:1000])
-#     print("--------------------------------")
-#     if len(result_docs) > 1:
-#         pprint.pprint(result_docs[1].page_content[:1000])
-#         print("--------------------------------")
-#     if len(result_docs) > 2:
-#         pprint.pprint(result_docs[2].page_content[:1000])
-#         print("--------------------------------")
-# else:
-#     print("검색 결과가 없습니다.")
-#     exit()
-
-#=======================================================================================================
-
-# ✅ LLM Chain
+# ✅ LLM 및 Chain 구성
 llm = ChatUpstage()
 
 prompt = ChatPromptTemplate.from_messages(
@@ -82,7 +45,7 @@ prompt = ChatPromptTemplate.from_messages(
             ---
             CONTEXT:
             {context}
-            """,
+            """
         ),
         ("human", "{input}"),
     ]
@@ -90,34 +53,26 @@ prompt = ChatPromptTemplate.from_messages(
 
 chain = prompt | llm | StrOutputParser()
 
-# ✅ 질문 예시
-query = input("질문을 입력하세요: ")
+# ✅ 외부에서 사용 가능한 RAG 기반 응답 함수
+def get_recycling_answer(query: str) -> str:
+    retriever = vectorstore.as_retriever(
+        search_type='mmr',
+        search_kwargs={"k": 3}
+    )
 
-retriever = vectorstore.as_retriever(
-    search_type='mmr',
-    search_kwargs={"k": 3}
-)
+    with open(os.devnull, 'w') as devnull:
+        old_stderr = sys.stderr
+        sys.stderr = devnull
+        try:
+            result_docs = retriever.invoke(query)
+        finally:
+            sys.stderr = old_stderr
 
-# stderr 리다이렉트로 telemetry 메시지 숨기기
-with open(os.devnull, 'w') as devnull:
-    old_stderr = sys.stderr
-    sys.stderr = devnull
-    try:
-        result_docs = retriever.invoke(query)
-    finally:
-        sys.stderr = old_stderr
+    context = "\n\n".join([doc.page_content for doc in result_docs])
 
-context = "\n\n".join([doc.page_content for doc in result_docs])
+    response = chain.invoke({
+        "context": context,
+        "input": query
+    })
 
-response = chain.invoke({
-    "context": context,
-    "input": query
-})
-
-print()
-print()
-print("--------------------------------")
-print(f"질문: {query}")
-print("--------------------------------")
-print(f"챗봇 답변: {response}")
-
+    return response
