@@ -8,3 +8,8 @@
 3. 가상 환경 킨 후 pine_RAG_LLM.py 키면 됩니다.
 4. 안 돌아갈 시 가장 먼저 pdf2html.py => pine_chunEmbedding.py => pine_Rag_LLM.py 순으로 실행 부탁드립니다.
 ```
+
+
+## evaluation.py 평가 해보는 방법
+- RAG_LLM.py 실행하는 라이브러리 버전들과 애매하게 버전이 호환이 안되어서 eval_requirements.txt 를 가상환경에 설치하셔서 측정하셔야 합니다.
+- .env 에 넣어야할 것: UPSTAGE_API_KEY, PINECONE_API_KEY, OPENAI_API_KEY (pinecone과 openai 관련 키는 mm 톡방 확인할 것)
