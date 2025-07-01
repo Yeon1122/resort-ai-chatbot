@@ -3,7 +3,8 @@
 
 ```
 1.가상환경 제작 후 pip install -r requirements.txt
-2. .env파일에 upstrage에서 받은 api키 추가
-3. 가상 환경 킨 후 chunkEmbedding.py => RAG_LLM.py 순으로 키면 됩니다.
-4. 안 돌아갈 시 가장 먼저 pdf2html.py 실행 부탁드립니다.
+2. .env파일에 upstrage에서 받은 UPSTAGE_API_KEY키 추가
+3. .env파일에 mm단톡방에 올린 PINECONE_API_KEY키 추가 (or pinecone가서 직접 계정 생성하고 api key 받아보셔도 됩니다다)
+3. 가상 환경 킨 후 pine_RAG_LLM.py 키면 됩니다.
+4. 안 돌아갈 시 가장 먼저 pdf2html.py => pine_chunEmbedding.py => pine_Rag_LLM.py 순으로 실행 부탁드립니다.
 ```
