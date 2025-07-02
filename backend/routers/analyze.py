@@ -57,7 +57,7 @@ def extract_known_items_by_question_order(question: str) -> List[str]:
     return [item for _, item in matches]
 
 
-question_items = []
+
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
@@ -75,14 +75,14 @@ async def analyze(
         image_item = None
         image_conf = 0.0
         question_item = None
+        best_item = ""
         answer = ""
-
+        question_items = []
         # 1. 이미지가 있을 경우 → YOLO 예측
         if file:
             candidates = await predict_topk_items_with_confidence(file, top_k=3)
             image_item = candidates[0]["item"]
             image_conf = candidates[0]["conf"]
-
         # 2. 질문이 있을 경우 → 질문을 품목으로 간주
         if question:
             question_items = extract_known_items_by_question_order(question.strip())
@@ -123,7 +123,16 @@ async def analyze(
             best_item = image_item
             image_conf = candidates[0]["conf"]
 
+
+        if not best_item:
+            best_item = "알 수 없음"
+        if not answer:
+            answer = "분리배출 정보를 찾지 못했습니다."
+
+
         return AnalyzeResponse(item=best_item, confidence=image_conf, answer=answer)
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))

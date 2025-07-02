@@ -18,14 +18,14 @@ function ChatPage() {
     if (!question.trim() && !selectedFile) return;
 
     const formData = new FormData();
-    if (selectedFile) formData.append('image', selectedFile);
+    if (selectedFile) formData.append('file', selectedFile);
     if (question.trim()) formData.append('question', question.trim());
 
     try {
-      const res = await fetch('http://localhost:8000/analyze', {
-        method: 'POST',
-        body: formData,
-      });
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/analyze`, {
+      method: 'POST',
+      body: formData,
+    });
 
       if (!res.ok) throw new Error('서버 응답 오류');
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './ImageUpload.module.css';
 
-function ImageUpload({ setImageName }) {
+function ImageUpload({ setImageName, setSelectedFile }) {
   const [preview, setPreview] = useState(null);
 
   const handleImageChange = (e) => {
@@ -9,6 +9,7 @@ function ImageUpload({ setImageName }) {
     if (!file) return;
 
     setImageName(file.name);
+    setSelectedFile(file); 
 
     const previewURL = URL.createObjectURL(file);
     setPreview(previewURL);
@@ -17,7 +18,7 @@ function ImageUpload({ setImageName }) {
   return (
     <div className={styles.wrapper}>
       <label className={styles.label}>📷 이미지 업로드</label>
-      <input type="file" onChange={handleImageChange} style={{ width: '100%' }} />
+      <input type="file" accept="image/*" onChange={handleImageChange} style={{ width: '100%' }} />
       {preview && <img src={preview} className={styles.previewImage} alt="preview" />}
     </div>
   );
