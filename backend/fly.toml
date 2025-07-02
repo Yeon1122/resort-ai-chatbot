@@ -4,9 +4,10 @@
 #
 
 app = 'resort-ai-chatbot'
-primary_region = 'sjc'
+primary_region = 'nrt'
 
 [build]
+  dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 8080
