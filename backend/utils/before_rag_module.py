@@ -1,30 +1,26 @@
 # backend/utils/rag_module.py
 
-from langchain_community.vectorstores import Pinecone as PineconeVectorStore
-from pinecone import Pinecone
-from langchain_upstage import UpstageEmbeddings, ChatUpstage
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_upstage import ChatUpstage
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-upstage_key = os.getenv("UPSTAGE_API_KEY")
-pinecone_api_key = os.getenv("PINECONE_API_KEY")
-index_name = "resort-chatbot"
 
-# pinecone 연결
-pc = Pinecone(api_key=pinecone_api_key)
+# Chroma DB 경로 설정
+CHROMA_DB_DIR = "./output/chroma_db"
 
 # 임베딩 모델 로드
-embedding_model = UpstageEmbeddings(model="embedding-query")
+embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # 벡터스토어 로드
-vector_db = PineconeVectorStore(
-            index =pc.Index(index_name),
-            embedding=embedding_model,
-            text_key="text"
-        )
+vector_db = Chroma(
+    persist_directory=CHROMA_DB_DIR,
+    embedding_function=embedding_model
+)
 
 # LLM 체인 구성
 llm = ChatUpstage()
