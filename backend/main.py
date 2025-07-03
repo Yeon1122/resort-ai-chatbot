@@ -1,10 +1,10 @@
-# main.py
+# main.py ###
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import analyze  # ← 올바르게 라우터 import
 
 app = FastAPI()
-
+##
 # 배포된 프론트 주소 (예: Vercel 주소)
 allowed_origins = [
     "https://dev.d1bnkyl237hpbt.amplifyapp.com",  # 프로덕션용
