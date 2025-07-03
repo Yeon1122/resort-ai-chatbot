@@ -15,7 +15,7 @@ upstage_key = os.getenv("UPSTAGE_API_KEY")
 connection_string = os.getenv("POSTGRES_CONNECTION_STRING")
 
 # 1. HTML 파싱해서 페이지별로 Document 리스트 만들기
-html_path = "./output/parsed_output.html"
+html_path = "../output/parsed_output.html"
 
 with open(html_path, "r", encoding="utf-8") as f:
     html_content = f.read()

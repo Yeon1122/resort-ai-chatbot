@@ -13,3 +13,7 @@
 ## evaluation.py 평가 해보는 방법
 - RAG_LLM.py 실행하는 라이브러리 버전들과 애매하게 버전이 호환이 안되어서 eval_requirements.txt 를 가상환경에 설치하셔서 측정하셔야 합니다.
 - .env 에 넣어야할 것: UPSTAGE_API_KEY, PINECONE_API_KEY, OPENAI_API_KEY (pinecone과 openai 관련 키는 mm 톡방 확인할 것)
+
+
+## 만약 postgres와 pgvector를 사용한다면 
+- UPSTAGE_API_KEY, POSTGRES_CONNECTION_STRING 환경변수 지정해줄 것.
