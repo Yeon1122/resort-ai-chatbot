@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { FaPaperPlane, FaImage } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
 
 function ChatPage() {
   const [imageName, setImageName] = useState('');
@@ -126,9 +127,9 @@ return (
                 alt="bot"
                 className="w-8 h-8 rounded-full object-cover border"
               />
-              <div className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl rounded-bl-sm text-sm shadow max-w-[75%]">
-                {chat.botAnswer}
-              </div>
+            <ReactMarkdown className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl rounded-bl-sm text-sm shadow max-w-[75%]">
+              {chat.botAnswer}
+            </ReactMarkdown>
             </div>
           </div>
         ))}
