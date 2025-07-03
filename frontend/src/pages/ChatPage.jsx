@@ -7,7 +7,7 @@ function ChatPage() {
   const [question, setQuestion] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -20,6 +20,8 @@ function ChatPage() {
     const formData = new FormData();
     if (selectedFile) formData.append('file', selectedFile);
     if (question.trim()) formData.append('question', question.trim());
+
+    setIsLoading(true);
 
     try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/analyze`, {
@@ -48,6 +50,7 @@ function ChatPage() {
     setQuestion('');
     setSelectedFile(null);
     setImageName('');
+    setIsLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -60,6 +63,20 @@ function ChatPage() {
 return (
   <div className="w-full h-screen bg-[#f7f7f8] flex items-center justify-center">
     <div className="w-full max-w-3xl h-full flex flex-col border-x bg-white relative">
+
+      {/* 로딩 모달 */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 shadow-2xl flex flex-col items-center">
+            <img
+              src="/RESORT_loading.gif"
+              alt="로딩 중"
+              className="w-32 h-32 object-contain mb-2"
+            />
+            <p className="text-gray-700 text-sm">잠시만 기다려주세요...</p>
+          </div>
+        </div>
+      )}
       
       {/* 🔝 네비게이션 바 */}
       <div className="absolute top-0 left-0 right-0 h-14 px-4 flex items-center justify-between bg-white border-b z-10">
