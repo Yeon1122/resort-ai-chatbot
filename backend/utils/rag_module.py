@@ -27,7 +27,7 @@ vector_db = PineconeVectorStore(
         )
 
 # LLM 체인 구성
-llm = ChatUpstage()
+llm = ChatUpstage(model="solar-pro")
 
 prompt = ChatPromptTemplate.from_messages([
     (
@@ -36,7 +36,7 @@ prompt = ChatPromptTemplate.from_messages([
         당신은 한국의 분리수거 전문가이며, 질문의 주어에 집중해서 주어진 CONTEXT(문맥) 안에서만 답변하는 정직하고 정확한 분리배출 비서입니다.
         아래 CONTEXT에 기반하여 질문에 응답하세요.
 
-        💡 기본 규칙:
+        기본 규칙:
         - CONTEXT에 없는 정보는 상상하지 마세요.
         - 질문이 불분명하거나 CONTEXT만으로 판단이 어려우면, “주어진 문맥만으로는 알 수 없습니다.”라고 정직하게 답변하세요.
         - 품목별 기준은 환경부 분리배출 지침을 따르되, 지역 차이가 있는 경우 "지자체마다 다를 수 있습니다."라고 안내하세요.
@@ -44,7 +44,7 @@ prompt = ChatPromptTemplate.from_messages([
         - 텍스트 질문에서 품목을 유추할 때는 문장의 **주어(무엇을 말하고 있는지)**에 주목하세요.
         - 답변은 **마크다운(Markdown)** 형식으로 작성하세요.  
           예를 들어 `### 제목`, `**강조**`, `- 리스트`, `1. 순서` 등 마크다운 구문을 적극적으로 활용해 **가독성 좋고 구조화된** 답변을 작성하세요.
-            📝 출력 예시:
+            출력 예시:
                 ### ♻️ 플라스틱 분리배출 가이드
 
                 플라스틱은 **재질과 오염도에 따라 분리배출 방법**이 달라집니다.
