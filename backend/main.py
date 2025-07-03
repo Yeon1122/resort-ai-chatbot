@@ -5,10 +5,16 @@ from routers import analyze  # ← 올바르게 라우터 import
 
 app = FastAPI()
 
-# CORS 설정 (필요시)
+# 배포된 프론트 주소 (예: Vercel 주소)
+allowed_origins = [
+    "https://resort-ai-chatbot1-ko9y.vercel.app",  # 프로덕션용
+]
+
+# CORS 설정
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
