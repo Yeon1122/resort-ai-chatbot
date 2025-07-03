@@ -16,4 +16,4 @@
 
 
 ## 만약 postgres와 pgvector를 사용한다면 
-- UPSTAGE_API_KEY, POSTGRES_CONNECTION_STRING 환경변수 지정해줄 것.
+- UPSTAGE_API_KEY, POSTGRES_CONNECTION_STRING 환경변수 지정해줄 것..
