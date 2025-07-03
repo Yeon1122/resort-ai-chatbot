@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from schemas.analyze import AnalyzeResponse
 from utils.yolo_infer import predict_topk_items_with_confidence
 from utils.rag_module import get_recycling_answer
-from typing import Optional, List
+from typing import List
 
 router = APIRouter()
 
@@ -57,8 +57,6 @@ def extract_known_items_by_question_order(question: str) -> List[str]:
     return [item for _, item in matches]
 
 
-
-
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(
     file: UploadFile = File(None),
@@ -74,7 +72,7 @@ async def analyze(
         candidates = []
         image_item = None
         image_conf = 0.0
-        question_item = None
+        # question_item = None
         best_item = ""
         answer = ""
         question_items = []
