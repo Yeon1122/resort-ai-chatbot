@@ -54,6 +54,7 @@ opencv-python==4.11.0.86
 orjson==3.10.18
 packaging==24.2
 pandas==2.3.0
+pgvector==0.4.1
 pillow==11.3.0
 pinecone==5.3.1
 pinecone-plugin-assistant==1.7.0
@@ -61,6 +62,7 @@ pinecone-plugin-inference==1.1.0
 pinecone-plugin-interface==0.0.7
 propcache==0.3.2
 psutil==7.0.0
+psycopg2-binary==2.9.10
 py-cpuinfo==9.0.0
 pydantic==2.11.7
 pydantic-settings==2.10.1

@@ -1,7 +1,6 @@
-# backend/utils/rag_module.py
+# backend/utils/post_rag_module.py
 
-from langchain_community.vectorstores import Pinecone as PineconeVectorStore
-from pinecone import Pinecone
+from langchain_community.vectorstores import PGVector
 from langchain_upstage import UpstageEmbeddings, ChatUpstage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
