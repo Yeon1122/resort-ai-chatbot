@@ -10,6 +10,7 @@ function ChatPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,6 +51,7 @@ function ChatPage() {
 
     setQuestion('');
     setSelectedFile(null);
+    fileInputRef.current.value = null;
     setImageName('');
     setIsLoading(false);
   };
@@ -156,18 +158,19 @@ return (
       <div className="p-4 border-t bg-white flex items-center gap-3">
         <label className="cursor-pointer text-gray-600 hover:text-green-500">
           <FaImage size={20} />
-          <input
-            type="file"
-            className="hidden"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                setSelectedFile(file);
-                setImageName(file.name);
-              }
-            }}
-          />
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              setSelectedFile(file);
+              setImageName(file.name);
+            }
+          }}
+        />
         </label>
 
         <textarea

@@ -85,49 +85,47 @@ async def analyze(
         if question:
             question_items = extract_known_items_by_question_order(question.strip())
 
-        # 3. 이미지 + 질문 둘 다 있는 경우
-        if image_item and question_items:
-            if image_item not in question_items:
-                image_answer = get_recycling_answer(f"{image_item}은(는) 어떻게 버려?")
+        # case: 이미지 + 질문 둘 다 있는 경우
+        if image_item and question:
+            if question_items and image_item not in question_items:
+                # (1) 이미지 품목에 대한 응답
+                image_answer = get_recycling_answer(image_item, question)
+
+                # (2) 질문에서 추출된 품목들 각각에 대한 응답
                 question_answers = [
-                    f"{item}: {get_recycling_answer(f'{item}은(는) 어떻게 버려?')}"
-                    for item in question_items
+                    f"{item}: {get_recycling_answer(item, None)}"
+                    for item in question_items if item != image_item
                 ]
+
                 answer = (
-                    f"### 🖼️ 이미지 분석 결과\n\n"
+                    f" ## 🖼️ 이미지 분석 결과\n\n"
                     f"- 인식된 품목: **{image_item}**\n"
                     f"- 안내: {image_answer}\n\n"
                     f"---\n\n"
-                    f"### 🗣️ 질문에서 인식된 품목\n\n"
-                    + "".join([f"- {qa}\n" for qa in question_answers])
+                    f" ## 🗣️ 질문에서 추출된 품목\n\n"
+                    + "\n".join([f"- {qa}" for qa in question_answers])
                 )
                 best_item = f"{image_item} / {' / '.join(question_items)}"
+            
             else:
-                answer = get_recycling_answer(f"{image_item}은(는) 어떻게 버려?")
+                # 동일한 품목이거나 질문 품목 없음
+                answer = get_recycling_answer(image_item, question)
                 best_item = image_item
-                image_conf = candidates[0]["conf"]
+        # case: 질문만 있는 경우
+        elif question:
+            answer = get_recycling_answer(None, question)
+            best_item = "질문 기반"
 
-        # 4. 질문만 있는 경우
-        elif question_items:
-            question_answers = [
-                f"{item}: {get_recycling_answer(f'{item}은(는) 어떻게 버려?')}"
-                for item in question_items
-            ]
-            answer = "\n".join(question_answers)
-            best_item = " / ".join(question_items)
-            image_conf = 0.0
-
-        # 5. 이미지만 있는 경우
+        # case: 이미지만 있는 경우
         elif image_item:
-            answer = get_recycling_answer(f"{image_item}은(는) 어떻게 버려?")
+            answer = get_recycling_answer(image_item, None)
             best_item = image_item
-            image_conf = candidates[0]["conf"]
 
 
-        if not best_item:
-            best_item = "알 수 없음"
-        if not answer:
-            answer = "분리배출 정보를 찾지 못했습니다."
+            if not best_item:
+                best_item = "알 수 없음"
+            if not answer:
+                answer = "분리배출 정보를 찾지 못했습니다."
 
 
         return AnalyzeResponse(item=best_item, confidence=image_conf, answer=answer)

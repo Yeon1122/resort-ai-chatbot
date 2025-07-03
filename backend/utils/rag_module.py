@@ -7,6 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 import os
+from typing import Optional
 
 load_dotenv()
 upstage_key = os.getenv("UPSTAGE_API_KEY")
@@ -42,10 +43,11 @@ prompt = ChatPromptTemplate.from_messages([
         - 품목별 기준은 환경부 분리배출 지침을 따르되, 지역 차이가 있는 경우 "지자체마다 다를 수 있습니다."라고 안내하세요.
         - 답변은 간결하고 명확하게, 중복 없이 작성하세요.
         - 텍스트 질문에서 품목을 유추할 때는 문장의 **주어(무엇을 말하고 있는지)**에 주목하세요.
+        - 가상의 링크는 어느 경우에도 제공하지 마세요.
         - 답변은 **마크다운(Markdown)** 형식으로 작성하세요.  
           예를 들어 `### 제목`, `**강조**`, `- 리스트`, `1. 순서` 등 마크다운 구문을 적극적으로 활용해 **가독성 좋고 구조화된** 답변을 작성하세요.
             출력 예시:
-                ### ♻️ 플라스틱 분리배출 가이드
+                ♻️ 플라스틱 분리배출 가이드
 
                 플라스틱은 **재질과 오염도에 따라 분리배출 방법**이 달라집니다.
 
@@ -100,12 +102,28 @@ prompt = ChatPromptTemplate.from_messages([
 rag_chain = prompt | llm | StrOutputParser()
 
 # 🔍 핵심 함수
-def get_recycling_answer(question: str) -> str:
+def get_recycling_answer(image_item: Optional[str], question: Optional[str]) -> str:
+    # 1. 질의 생성
+    if image_item and question:
+        full_query = (
+            f"사진에서 인식된 품목은 '{image_item}'입니다. "
+            f"사용자의 질문은 '{question}'입니다. "
+            f"{image_item}은(는) 어떻게 버려야 하나요?"
+        )
+    elif image_item:
+        full_query = f"사진에서 인식된 품목은 '{image_item}'입니다. {image_item}은(는) 어떻게 버려야 하나요?"
+    elif question:
+        full_query = question
+    else:
+        return "이미지나 질문이 모두 없어 응답할 수 없습니다."
+
+    # 2. 문서 검색
     retriever = vector_db.as_retriever(search_type="mmr", search_kwargs={"k": 3})
-    docs = retriever.invoke(question)
+    docs = retriever.invoke(full_query)
     context = "\n\n".join([doc.page_content for doc in docs])
 
+    # 3. 프롬프트 체인 실행
     return rag_chain.invoke({
         "context": context,
-        "input": question
+        "input": full_query
     })
