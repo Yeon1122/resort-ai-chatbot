@@ -75,7 +75,7 @@ cd backend
 pip install -r ../requirements.txt
 uvicorn main:app --reload
 ```
-- http://localhost:8000/docs
+- 실행 주소 : http://localhost:8000/docs
 
    
 ### 프론트엔드 실행
@@ -84,7 +84,7 @@ cd frontend
 npm install
 npm run dev
 ```
-- 실행 주소: http://localhost:5173
+- 실행 주소 : http://localhost:5173
 
 ---
 
