@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import analyze  # ← 올바르게 라우터 import
 
 app = FastAPI()
-
+##
 # 배포된 프론트 주소 (예: Vercel 주소)
 allowed_origins = [
     "https://resort-ai-chatbot1-ko9y.vercel.app",  # 프로덕션용
