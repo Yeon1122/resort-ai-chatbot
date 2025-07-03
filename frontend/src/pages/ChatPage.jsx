@@ -82,12 +82,9 @@ return (
       {/* 🔝 네비게이션 바 */}
       <div className="absolute top-0 left-0 right-0 h-14 px-4 flex items-center justify-between bg-white border-b z-10">
         {/* 왼쪽: RE:SORT 메인으로 */}
-        <button
-          onClick={() => window.location.href = '/'}
-          className="text-green-600 font-bold text-lg hover:underline"
-        >
-          RE:SORT
-        </button>
+        <a href="/" className="block">
+          <img src="logo.png" alt="RE:SORT logo" className="w-[80px] h-[80px] object-contain" />
+        </a>
 
         {/* 오른쪽: About 페이지 이동 */}
         <button
@@ -127,9 +124,9 @@ return (
                 alt="bot"
                 className="w-8 h-8 rounded-full object-cover border"
               />
-            <ReactMarkdown className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl rounded-bl-sm text-sm shadow max-w-[75%]">
-              {chat.botAnswer}
-            </ReactMarkdown>
+            <div className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl rounded-bl-sm text-sm shadow max-w-[75%]">
+              <ReactMarkdown>{chat.botAnswer}</ReactMarkdown>
+            </div>
             </div>
           </div>
         ))}

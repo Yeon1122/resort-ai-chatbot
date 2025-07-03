@@ -94,10 +94,12 @@ async def analyze(
                     for item in question_items
                 ]
                 answer = (
-                    f"이미지에서는 '{image_item}'으로 인식되었습니다.\n"
-                    f"{image_answer}\n\n"
-                    f"그러나 질문에는 다음 품목들이 포함되어 있습니다:\n"
-                    + "\n".join(question_answers)
+                    f"### 🖼️ 이미지 분석 결과\n\n"
+                    f"- 인식된 품목: **{image_item}**\n"
+                    f"- 안내: {image_answer}\n\n"
+                    f"---\n\n"
+                    f"### 🗣️ 질문에서 인식된 품목\n\n"
+                    + "".join([f"- {qa}\n" for qa in question_answers])
                 )
                 best_item = f"{image_item} / {' / '.join(question_items)}"
             else:
