@@ -100,7 +100,7 @@ prompt = ChatPromptTemplate.from_messages([
 
 rag_chain = prompt | llm | StrOutputParser()
 
-# 🔍 핵심 함수
+# 🔍 핵심 함수.
 def get_recycling_answer(image_item: Optional[str], question: Optional[str]) -> str:
     # 1. 질의 생성
     if image_item and question:
