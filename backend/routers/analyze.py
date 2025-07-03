@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from schemas.analyze import AnalyzeResponse
 from utils.yolo_infer import predict_topk_items_with_confidence
-from utils.post_rag_module import get_recycling_answer
+from utils.rag_module import get_recycling_answer
 from typing import List
 
 router = APIRouter()
