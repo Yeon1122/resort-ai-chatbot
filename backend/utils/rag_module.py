@@ -1,5 +1,4 @@
 # backend/utils/rag_module.py
-
 from langchain_community.vectorstores import Pinecone as PineconeVectorStore
 from pinecone import Pinecone
 from langchain_upstage import UpstageEmbeddings, ChatUpstage
