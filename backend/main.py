@@ -7,7 +7,7 @@ app = FastAPI()
 
 # 배포된 프론트 주소 (예: Vercel 주소)
 allowed_origins = [
-    "https://resort-ai-chatbot1-ko9y.vercel.app",  # 프로덕션용
+    "https://dev.d1bnkyl237hpbt.amplifyapp.com",  # 프로덕션용
 ]
 
 # CORS 설정
