@@ -85,7 +85,7 @@ return (
       <div className="absolute top-0 left-0 right-0 h-14 px-4 flex items-center justify-between bg-white border-b z-10">
         {/* 왼쪽: RE:SORT 메인으로 */}
         <a href="/" className="block">
-          <img src="logo.png" alt="RE:SORT logo" className="w-[80px] h-[80px] object-contain" />
+          <img src="/logo.png" alt="RE:SORT logo" className="w-[80px] h-[80px] object-contain" />
         </a>
 
         {/* 오른쪽: About 페이지 이동 */}
