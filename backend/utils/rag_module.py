@@ -1,4 +1,4 @@
-# backend/utils/rag_module.py
+# backend/utils/rag_module.py 
 from langchain_community.vectorstores import Pinecone as PineconeVectorStore
 from pinecone import Pinecone
 from langchain_upstage import UpstageEmbeddings, ChatUpstage
@@ -13,7 +13,7 @@ upstage_key = os.getenv("UPSTAGE_API_KEY")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
 index_name = "resort-chatbot"
 
-# pinecone 연결
+# pinecone 연결.
 pc = Pinecone(api_key=pinecone_api_key)
 
 # 임베딩 모델 로드
